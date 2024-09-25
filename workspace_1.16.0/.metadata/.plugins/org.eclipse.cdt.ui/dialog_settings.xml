@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="org.eclipse.cdt.utils.ui.controls.FileListControl" value="C:\Users\autocon\STM32CubeIDE\workspace_1.16.0\20_MyPractice\Drivers\BSP\NUCLEOVB"/>
+	<section name="completion_proposal_size">
+	</section>
+	<section name="org.eclipse.cdt.ui.text.hover.CMacroExpansionExploration">
+	</section>
+	<section name="PDOMSearchPage">
+		<item key="caseSensitive" value="false"/>
+		<item key="searchFlags" value="227191"/>
+		<list key="previousPatterns">
+			<item value="168"/>
+			<item value="weak"/>
+			<item value="Recieve"/>
+			<item value="UART_Re"/>
+			<item value="NVIC"/>
+			<item value="huart"/>
+			<item value="PERIPH_BASE"/>
+			<item value="AHB2PERIPH_BASE"/>
+			<item value="GPIOA_BASE"/>
+		</list>
+	</section>
+	<section name="CResourceRenameRefactoringInputPage">
+		<item key="updateReferences" value="true"/>
+	</section>
+	<section name="OptionalMessageDialog.hide.">
+		<item key="askReindex.detail" value="0"/>
+	</section>
+</section>

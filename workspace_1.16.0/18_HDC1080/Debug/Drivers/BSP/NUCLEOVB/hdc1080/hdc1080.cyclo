@@ -1,0 +1,4 @@
+../Drivers/BSP/NUCLEOVB/hdc1080/hdc1080.c:31:1:hdc1080_read_reg	4
+../Drivers/BSP/NUCLEOVB/hdc1080/hdc1080.c:77:1:hdc1080_write_reg	3
+../Drivers/BSP/NUCLEOVB/hdc1080/hdc1080.c:140:1:hdc1080_init	3
+../Drivers/BSP/NUCLEOVB/hdc1080/hdc1080.c:169:1:hdc1080_measure	3

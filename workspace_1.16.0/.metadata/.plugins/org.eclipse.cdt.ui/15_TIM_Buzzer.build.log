@@ -1,0 +1,10 @@
+16:32:30 **** Incremental Build of configuration Debug for project 15_TIM_Buzzer ****
+make -j16 all 
+arm-none-eabi-size  15_TIM_Buzzer.elf 
+   text	   data	    bss	    dec	    hex	filename
+  11324	     60	   1716	  13100	   332c	15_TIM_Buzzer.elf
+Finished building: default.size.stdout
+ 
+
+16:32:30 Build Finished. 0 errors, 0 warnings. (took 232ms)
+

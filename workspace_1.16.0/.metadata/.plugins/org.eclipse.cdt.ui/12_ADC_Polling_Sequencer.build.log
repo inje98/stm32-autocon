@@ -1,0 +1,39 @@
+16:32:28 **** Incremental Build of configuration Debug for project 12_ADC_Polling_Sequencer ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function '__io_putchar':
+../Core/Src/main.c:80:18: warning: multi-character character constant [-Wmultichar]
+   80 |         if(ch == '/n')
+      |                  ^~~~
+../Core/Src/main.c:80:9: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+   80 |         if(ch == '/n')
+      |         ^~
+../Core/Src/main.c:82:17: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+   82 |                 HAL_UART_Transmit(&huart2, (uint8_t*) &ch, 1, 0xFFFF);
+      |                 ^~~~~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:153:7: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+  153 |       printf ("VAR=%4d, CDS=%4d\n", uwADCxConvertedValue[0], uwADCxConvertedValue[1]);
+      |       ^~~~~~
+../Core/Src/main.c:21:1: note: include '<stdio.h>' or provide a declaration of 'printf'
+   20 | #include "main.h"
+  +++ |+#include <stdio.h>
+   21 | 
+../Core/Src/main.c:153:7: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  153 |       printf ("VAR=%4d, CDS=%4d\n", uwADCxConvertedValue[0], uwADCxConvertedValue[1]);
+      |       ^~~~~~
+../Core/Src/main.c:153:7: note: include '<stdio.h>' or provide a declaration of 'printf'
+arm-none-eabi-gcc -o "12_ADC_Polling_Sequencer.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\autocon\STM32CubeIDE\workspace_1.16.0\12_ADC_Polling_Sequencer\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="12_ADC_Polling_Sequencer.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: 12_ADC_Polling_Sequencer.elf
+ 
+arm-none-eabi-size  12_ADC_Polling_Sequencer.elf 
+arm-none-eabi-objdump -h -S 12_ADC_Polling_Sequencer.elf  > "12_ADC_Polling_Sequencer.list"
+   text	   data	    bss	    dec	    hex	filename
+  14732	    104	   2048	  16884	   41f4	12_ADC_Polling_Sequencer.elf
+Finished building: default.size.stdout
+ 
+Finished building: 12_ADC_Polling_Sequencer.list
+ 
+
+16:32:29 Build Finished. 0 errors, 4 warnings. (took 797ms)
+

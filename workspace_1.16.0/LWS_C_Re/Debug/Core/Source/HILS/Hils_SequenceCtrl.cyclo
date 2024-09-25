@@ -1,0 +1,5 @@
+../Core/Source/HILS/Hils_SequenceCtrl.c:65:13:Lws__exit_internal_Hils_Control	1
+../Core/Source/HILS/Hils_SequenceCtrl.c:74:13:enter_internal_PowerOn_Standby	1
+../Core/Source/HILS/Hils_SequenceCtrl.c:135:13:Lws_HilsCtrl__Main_Hils_Control	52
+../Core/Source/HILS/Hils_SequenceCtrl.c:641:6:Hils_SequenceCtrl_Init	1
+../Core/Source/HILS/Hils_SequenceCtrl.c:659:6:Hils_SequenceCtrl	23

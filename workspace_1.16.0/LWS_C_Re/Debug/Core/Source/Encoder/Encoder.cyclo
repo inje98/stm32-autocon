@@ -1,0 +1,6 @@
+../Core/Source/Encoder/Encoder.c:27:6:FUN_Encoder_Init	2
+../Core/Source/Encoder/Encoder.c:50:6:FUN_Encoder_Routine	5
+../Core/Source/Encoder/Encoder.c:86:6:FUN_Encoder_Output_Set	2
+../Core/Source/Encoder/Encoder.c:110:6:FUN_Encoder_OutputBuffer_Set	3
+../Core/Source/Encoder/Encoder.c:131:6:Encoder_Degree_To_Data	5
+../Core/Source/Encoder/Encoder.c:183:6:HAL_SPI_TxCpltCallback	3

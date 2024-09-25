@@ -1,0 +1,10 @@
+16:32:29 **** Incremental Build of configuration Debug for project 14_ADC_DMA_Sequencer ****
+make -j16 all 
+arm-none-eabi-size  14_ADC_DMA_Sequencer.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16888	    104	   2152	  19144	   4ac8	14_ADC_DMA_Sequencer.elf
+Finished building: default.size.stdout
+ 
+
+16:32:30 Build Finished. 0 errors, 0 warnings. (took 181ms)
+

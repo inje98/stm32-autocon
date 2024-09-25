@@ -1,0 +1,7 @@
+../Core/Source/DAC/DAC.c:29:6:FUN_DAC_Init	1
+../Core/Source/DAC/DAC.c:42:6:FUN_DAC_Routine	2
+../Core/Source/DAC/DAC.c:149:6:DAC_Converter_4ma_Init	1
+../Core/Source/DAC/DAC.c:185:6:FUN_DAC_Converter_set_dac_code	32
+../Core/Source/DAC/DAC.c:560:14:sfun_DAC_Converter_gain_offset	1
+../Core/Source/DAC/DAC.c:572:6:FUN_DAC_Converter_Gripper	1
+../Core/Source/DAC/DAC.c:587:6:FUN_DAC_Converter_Oil	1

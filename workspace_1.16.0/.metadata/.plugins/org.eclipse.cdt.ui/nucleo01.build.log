@@ -1,0 +1,10 @@
+14:22:27 **** Incremental Build of configuration Debug for project nucleo01 ****
+make -j16 all 
+arm-none-eabi-size  nucleo01.elf 
+   text	   data	    bss	    dec	    hex	filename
+   7792	     12	   1644	   9448	   24e8	nucleo01.elf
+Finished building: default.size.stdout
+ 
+
+14:22:27 Build Finished. 0 errors, 0 warnings. (took 131ms)
+

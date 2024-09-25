@@ -1,0 +1,10 @@
+16:32:32 **** Build of configuration Debug for project 1_LED_Bink ****
+make -j16 all 
+arm-none-eabi-size  1_LED_Bink.elf 
+   text	   data	    bss	    dec	    hex	filename
+   7796	     12	   1644	   9452	   24ec	1_LED_Bink.elf
+Finished building: default.size.stdout
+ 
+
+16:32:32 Build Finished. 0 errors, 0 warnings. (took 181ms)
+

@@ -1,0 +1,7 @@
+../Core/Source/ADC/ADC.c:32:6:FUN_ADC_Init	1
+../Core/Source/ADC/ADC.c:49:6:FUN_ADC_Parameter_Reset	2
+../Core/Source/ADC/ADC.c:67:6:FUN_ADC_Routine	20
+../Core/Source/ADC/ADC.c:192:6:FUN_ADC_ChannelSelect	11
+../Core/Source/ADC/ADC.c:275:7:FUN_ADC_VoltageConvert	21
+../Core/Source/ADC/ADC.c:499:6:FUN_ADC_Average_Calculator	2
+../Core/Source/ADC/ADC.c:521:6:FUN_ADC_AvgValueReset	2
