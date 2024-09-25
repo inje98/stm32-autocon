@@ -1,4 +1,0 @@
-../Core/Source/HILS/HILS.c:32:6:FUN_HILS_Init	1
-../Core/Source/HILS/HILS.c:41:6:FUN_HILS_Routine	1
-../Core/Source/HILS/HILS.c:52:6:FUN_HILS_Input_Routine	11
-../Core/Source/HILS/HILS.c:217:6:FUN_HILS_Output_Routine	4

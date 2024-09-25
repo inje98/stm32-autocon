@@ -1,9 +1,0 @@
-../Core/Source/GPIO/GPO.c:27:6:FUN_GPO_Init	1
-../Core/Source/GPIO/GPO.c:83:6:FUN_GPO_PortCheck	1
-../Core/Source/GPIO/GPO.c:140:6:FUN_GPO_Routine	2
-../Core/Source/GPIO/GPO.c:219:6:FUN_GPO_Output	97
-../Core/Source/GPIO/GPO.c:745:6:FUN_GPO_Gripper	1
-../Core/Source/GPIO/GPO.c:760:6:FUN_GPO_Oil	1
-../Core/Source/GPIO/GPO.c:773:6:FUN_GPO_Cutter	1
-../Core/Source/GPIO/GPO.c:790:6:FUN_GPO_Cleaner	1
-../Core/Source/GPIO/GPO.c:807:6:FUN_GPO_Emergency	1
