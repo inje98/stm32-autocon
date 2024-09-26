@@ -1,0 +1,8 @@
+../Core/Source/Modbus/Modbus.c:37:10:CRC16	4
+../Core/Source/Modbus/Modbus.c:63:6:FUN_Modbus_init	1
+../Core/Source/Modbus/Modbus.c:82:6:FUN_Modbus_RxCallback_Flag	1
+../Core/Source/Modbus/Modbus.c:104:6:FUN_Modbus_Write_save	7
+../Core/Source/Modbus/Modbus.c:141:6:FUN_Modbus_RxCallback_ERROR	2
+../Core/Source/Modbus/Modbus.c:162:6:FUN_Modbus_RxCallback_ReadWriteData	3
+../Core/Source/Modbus/Modbus.c:235:6:FUN_Modbus_RxCallback_ReadData	9
+../Core/Source/Modbus/Modbus.c:375:6:FUN_Modbus_Read	29

@@ -1,0 +1,13 @@
+../Core/Source/EEPROM/EEPROM.c:41:6:EEPROM_Comm	1
+../Core/Source/EEPROM/EEPROM.c:59:6:EEPROM_init	24
+../Core/Source/EEPROM/EEPROM.c:163:6:EEPROM_routine	6
+../Core/Source/EEPROM/EEPROM.c:231:6:EEPROM_SPI_INIT	1
+../Core/Source/EEPROM/EEPROM.c:247:19:EEPROM_SPI_WritePage	5
+../Core/Source/EEPROM/EEPROM.c:307:19:EEPROM_SPI_WriteBuffer	16
+../Core/Source/EEPROM/EEPROM.c:423:19:EEPROM_SPI_ReadBuffer	3
+../Core/Source/EEPROM/EEPROM.c:452:9:EEPROM_SPI_WaitStandbyState	3
+../Core/Source/EEPROM/EEPROM.c:486:9:EEPROM_SendByte	5
+../Core/Source/EEPROM/EEPROM.c:518:6:EEPROM_WriteEnable	1
+../Core/Source/EEPROM/EEPROM.c:536:6:EEPROM_WriteDisable	1
+../Core/Source/EEPROM/EEPROM.c:556:6:EEPROM_SPI_SendInstruction	3
+../Core/Source/EEPROM/EEPROM.c:564:6:EEPROM_Factory_Reset	2

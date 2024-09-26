@@ -1,0 +1,9 @@
+../Core/Source/ADPD188BI/ADPD188BI.c:33:6:setDeviceMode	6
+../Core/Source/ADPD188BI/ADPD188BI.c:54:19:writeToRegister	3
+../Core/Source/ADPD188BI/ADPD188BI.c:79:10:readRegisterData	1
+../Core/Source/ADPD188BI/ADPD188BI.c:97:19:smokeSensorADPD188Detect	2
+../Core/Source/ADPD188BI/ADPD188BI.c:109:19:smokeSensorADPD188Init	3
+../Core/Source/ADPD188BI/ADPD188BI.c:145:19:terminateNormalOperation	2
+../Core/Source/ADPD188BI/ADPD188BI.c:165:14:readFifo	7
+../Core/Source/ADPD188BI/ADPD188BI.c:266:18:readData	4
+../Core/Source/ADPD188BI/ADPD188BI.c:343:6:config	32

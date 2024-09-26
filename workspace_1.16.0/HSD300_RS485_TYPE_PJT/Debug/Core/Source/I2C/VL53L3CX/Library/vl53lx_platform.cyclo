@@ -1,0 +1,17 @@
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:47:5:_I2CWrite	1
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:51:5:_I2CRead	1
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:55:14:VL53LX_WriteMulti	3
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:73:14:VL53LX_ReadMulti	3
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:94:14:VL53LX_WrByte	2
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:111:14:VL53LX_WrWord	2
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:129:14:VL53LX_WrDWord	2
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:147:14:VL53LX_UpdateByte	2
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:161:14:VL53LX_RdByte	3
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:182:14:VL53LX_RdWord	3
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:207:14:VL53LX_RdDWord	3
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:232:14:VL53LX_GetTickCount	1
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:259:14:VL53LX_GetTimerFrequency	1
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:267:14:VL53LX_WaitMs	1
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:272:14:VL53LX_WaitUs	1
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:277:14:VL53LX_WaitValueMaskEx	11
+../Core/Source/I2C/VL53L3CX/Library/vl53lx_platform.c:384:21:VL53LX_Delay	2

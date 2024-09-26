@@ -1,0 +1,287 @@
+/*
+ * TIME_TASK.c
+ *
+ *  Created on: Dec 13, 2023
+ *      Author: AutoconTech
+ */
+
+#include "..\Source\HSD300_FW.h"
+
+extern TIM_HandleTypeDef htim6;
+//extern struct CsPin csPin;
+extern UART_HandleTypeDef huart5;
+extern SPI_HandleTypeDef hspi3;
+
+/*-------Macro Declaration----------------------------------------------------*/
+#define TIMER_1000ms			(999)
+#define TIMER_250ms				(249)
+#define TIMER_100ms				(99)
+#define TIMER_10ms				(9)
+#define TIMER_5ms				(4)
+
+
+_TimeTask TimeTask;
+
+_TimeTaskCnt TimeTaskCnt;
+
+uint32_t u4f_tim_cnt = 0;
+uint32_t u4f_tim_cnt1 = 0;
+uint32_t u4f_tim_cnt2 = 0;
+uint8_t u1f_tim_1000ms_trg = 0;
+uint8_t u1f_tim_250ms_trg = 0;
+//uint8_t u1f_tim_100ms_trg = 0;
+uint8_t u1f_tim_10ms_trg = 0;
+uint8_t u1f_tim_5ms_trg = 0;
+uint8_t u1f_tim_1ms_trg = 0;
+uint8_t Buzz_PWM;
+uint8_t Tx_cnt;
+
+bool DS_ActiveFlag = 0;
+
+
+uint64_t CountCheck1ms    = 0;
+uint64_t CountCheck5ms    = 0;
+uint64_t CountCheck10ms   = 0;
+uint64_t CountCheck100ms  = 0;
+uint64_t CountCheck250ms  = 0;
+uint64_t CountCheck500ms  = 0;
+uint64_t CountCheck1000ms = 0;
+
+uint64_t TimeFreeRunTaskCnt = 0;
+
+uint8_t count_200ms = 0;
+
+
+_Error Error;
+
+/****************************************************************************/
+/*	Overview	:															*/
+/*	Return value:	void													*/
+/****************************************************************************/
+void FUN_TIM_init(void)
+{
+	//HAL_TIM_Base_Init(&htim6);
+	HAL_TIM_Base_Start_IT(&htim6);
+}
+/****************************************************************************/
+/*	Overview	:															*/
+/*	Return value:	void													*/
+/****************************************************************************/
+void FUN_Tim6_1ms_routine(void)
+{
+        CountCheck1ms++;
+#ifdef HSS300
+        RS485_AnalyzePacket();
+#endif
+        //readData(hspi3, csPin);
+}
+
+
+
+
+
+
+void FUN_Tim6_5ms_routine(void)
+{
+        CountCheck5ms++;
+        FUN_ADC_Routine();
+        //readData(hspi3, csPin);
+        Gas_Detecting(hspi3, csPin);
+
+}
+
+
+
+
+void FUN_Tim6_10ms_routine(void)
+{
+        CountCheck10ms++;
+        //RS485_Make_Send_Packet();
+        FUN_RS485_Rx_Timeout_Check();
+}
+
+void FUN_Tim6_100ms_routine(void)
+{
+        CountCheck100ms++;
+        count_200ms++;
+        //readData(hspi3, csPin);
+        //tx_test(huart5);
+        if(count_200ms > 1){
+        	count_200ms = 0;
+        	Gas_Sensor_Detect();
+        }
+
+}
+
+
+
+void FUN_Tim6_250ms_routine(void)
+{
+        CountCheck250ms++;
+        //swtich_test();
+
+        FUN_I2C_INT_SHT30_Routine();
+    	FUN_I2C_EXT_SHT30_Routine();
+    	//FUN_I2C_VL53L3CX_Routine();
+        /*if(!DS_ActiveFlag){
+        	FUN_I2C_INT_SHT30_Routine();
+    		DS_ActiveFlag = !DS_ActiveFlag;
+        }
+        else{
+        	FUN_I2C_VL53L3CX_Routine();
+        	DS_ActiveFlag = !DS_ActiveFlag;
+        }*/
+}
+
+
+
+
+void FUN_Tim6_500ms_routine(void)
+{
+        CountCheck500ms++;
+        FUN_GPIO_Routine();
+        //readData(hspi3, csPin);
+        //FUN_ADC_Routine();
+
+}
+
+
+
+void FUN_Tim6_1000ms_routine(void)
+{
+        CountCheck1000ms++;
+        EEPROM_routine();
+    	FUN_RS485_routine();
+        //readData(hspi3, csPin);
+
+
+        if(CountCheck1000ms > 86400)  //하루 24시간
+        {
+                CountCheck1ms    = 0;
+                CountCheck5ms    = 0;
+                CountCheck10ms   = 0;
+                CountCheck100ms  = 0;
+                CountCheck250ms  = 0;
+                CountCheck500ms  = 0;
+                CountCheck1000ms = 0;
+
+        }
+
+}
+
+/****************************************************************************/
+/*	Overview	:															*/
+/*	Return value:	void													*/
+/****************************************************************************/
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+
+	if(htim -> Instance == TIM6)
+	{
+		//If Main Loop is error for 1000ms, Watchdog Reset
+		// If timer interrupt loop is error, Watchdog Reset
+		TimeTaskCnt.TimeScheduleCnt++;
+
+
+		TimeTask.bit.Task_1ms = 1;
+
+
+		if((TimeTaskCnt.TimeScheduleCnt%5) == 0)     //5ms 카운터 체크
+		{
+				TimeTask.bit.Task_5ms = 1;
+		}
+
+
+		if((TimeTaskCnt.TimeScheduleCnt%10) == 0)     //10ms 카운터 체크
+		{
+				TimeTask.bit.Task_10ms = 1;
+		}
+
+
+		if((TimeTaskCnt.TimeScheduleCnt%100) == 0)    //100ms 카운터 체크
+		{
+				TimeTask.bit.Task_100ms = 1;
+		}
+
+
+		if((TimeTaskCnt.TimeScheduleCnt%250) == 0)    //100ms 카운터 체크
+		{
+				TimeTask.bit.Task_250ms = 1;
+		}
+
+
+		if((TimeTaskCnt.TimeScheduleCnt%500) == 0)    //500ms 카운터 체크
+		{
+				TimeTask.bit.Task_500ms = 1;
+		}
+
+
+		if(TimeTaskCnt.TimeScheduleCnt >= 1000)       //1sec 카운터 체크
+		{
+				TimeTask.bit.Task_1000ms = 1;
+
+				TimeTaskCnt.TimeScheduleCnt = 0;
+		}
+	}
+}
+
+
+void Task_Schedule_freerun(void)
+{
+	TimeFreeRunTaskCnt++;
+	if(TimeTask.bit.Task_1ms==1)                // 1ms  체크
+	{
+			FUN_Tim6_1ms_routine();
+
+			TimeTask.bit.Task_1ms = 0;
+	}
+
+
+	if(TimeTask.bit.Task_5ms==1)                // 5ms  체크
+	{
+			FUN_Tim6_5ms_routine();
+
+			TimeTask.bit.Task_5ms = 0;
+	}
+
+
+	if(TimeTask.bit.Task_10ms==1)                // 10ms  체크
+	{
+			FUN_Tim6_10ms_routine();
+
+			TimeTask.bit.Task_10ms = 0;
+	}
+
+	if(TimeTask.bit.Task_100ms==1)               // 100ms 체크
+	{
+			FUN_Tim6_100ms_routine();
+
+			TimeTask.bit.Task_100ms = 0;
+	}
+
+
+	if(TimeTask.bit.Task_250ms==1)               // 100ms 체크
+	{
+			FUN_Tim6_250ms_routine();
+
+			TimeTask.bit.Task_250ms = 0;
+	}
+
+
+	if(TimeTask.bit.Task_500ms==1)               // 500ms 체크
+	{
+			FUN_Tim6_500ms_routine();
+
+			TimeTask.bit.Task_500ms = 0;
+	}
+
+
+	if(TimeTask.bit.Task_1000ms==1)              // 1sec  체크
+	{
+			FUN_Tim6_1000ms_routine();
+
+			TimeTask.bit.Task_1000ms = 0;
+	}
+
+}
+

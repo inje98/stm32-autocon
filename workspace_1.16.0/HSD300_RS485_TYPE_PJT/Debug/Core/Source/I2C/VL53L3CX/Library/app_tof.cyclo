@@ -1,0 +1,4 @@
+../Core/Source/I2C/VL53L3CX/Library/app_tof.c:53:6:MX_TOF_Init	1
+../Core/Source/I2C/VL53L3CX/Library/app_tof.c:75:6:MX_TOF_Process	1
+../Core/Source/I2C/VL53L3CX/Library/app_tof.c:88:13:MX_VL53L3CX_SimpleRanging_Init	2
+../Core/Source/I2C/VL53L3CX/Library/app_tof.c:104:13:MX_VL53L3CX_SimpleRanging_Process	15
