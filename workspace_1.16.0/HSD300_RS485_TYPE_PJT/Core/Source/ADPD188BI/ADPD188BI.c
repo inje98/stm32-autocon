@@ -263,7 +263,7 @@ uint16_t Data_A_Offset = 0;
 uint16_t Data_B_Offset = 0;
 _result_adp_data ADP_RESULT;
 
-_result_adp_data readData(SPI_HandleTypeDef hspi, struct CsPin csPin)
+_result_adp_data readData(SPI_HandleTypeDef hspi, struct CsPin csPin)    // 구조체 변수 ADP_RESULT 리턴
 {
   _ADP_rawData raw_adp_data = {0,0};
   _ADP_rawData dummy_data = {0,0};

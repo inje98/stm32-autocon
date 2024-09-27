@@ -77,18 +77,18 @@ void Gas_Sensor_Init(){
 #endif
 }
 
-void Gas_Detecting(SPI_HandleTypeDef hspi, struct CsPin csPin)
+void Gas_Detecting(SPI_HandleTypeDef hspi, struct CsPin csPin) // 5ms마다 호출
 {
-	_result_adp_data IR_Data = readData(hspi, csPin);
+	_result_adp_data IR_Data = readData(hspi, csPin);		 // IR 투과율 측정 이부분인거 같음. 바닥에 있는거		// 뭔지 모르겠지만 구조체 변수 ADP_RESULT를 리턴 받아오는데	이게 IR값인가 싶기도
 //	Gas_Sensor.IR_Data = SMK_MovingAverageFilter((float)IR_Data.result_IR_val * 0.1);
 //	Gas_Sensor.Blue_IR_Data = SMK_MovingAverageFilter((float)IR_Data.result_Blue_val * 0.1);
-	Gas_Sensor.IR_Data = SMK_MovingAverageFilter(IR_Data.result_IR_val, &IR_MovBuff[0]);
+	Gas_Sensor.IR_Data = SMK_MovingAverageFilter(IR_Data.result_IR_val, &IR_MovBuff[0]);                // 받아온 ADP_RESULT 구조체의 각각 멤버변수를 Gas_Sensor에 넣어준다. 5ms마다
 	Gas_Sensor.Blue_IR_Data = SMK_MovingAverageFilter(IR_Data.result_Blue_val, &Blue_IR_MovBuff[0]);
 	//Gas_Sensor_Detect();
 }
 
 
-void Gas_Sensor_Detect()
+void Gas_Sensor_Detect()    //  100ms마다 호출
 {
 	// 오차 누적값 계산
 	Gas_Sensor.IR_Cumulative_Error = (Gas_Sensor.IR_Data * 0.1) - Gas_Sensor.IR_Cumulative;

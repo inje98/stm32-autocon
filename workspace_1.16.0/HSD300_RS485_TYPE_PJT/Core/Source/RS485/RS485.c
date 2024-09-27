@@ -1721,13 +1721,13 @@ void FUN_RS485_Error_routine(void)
 		Error.RS485_error_Cnt = 0;
 	}
 }
-void FUN_RS485_Rx_Timeout_Check(void)
+void FUN_RS485_Rx_Timeout_Check(void)     	// 10ms마다 호출
 {
 	// Data Head 수신 이후 정상종료가 이루어지지 않았을 때 Time Out(Rx)
-	if(RS485Rx.Rx_Data_flag == 1){
+	if(RS485Rx.Rx_Data_flag == 1){  	// 데이터 수신이 시작되면 1이 되는거 같음
 		RS485Rx.Rx_Data_cnt ++;
 		// Time OUt : 250ms
-		if(RS485Rx.Rx_Data_cnt > 25){
+		if(RS485Rx.Rx_Data_cnt > 25){   // 250ms(25번 호출) 지나면 전부 0으로.. 이게 타임아웃인거 같음
 			RS485Rx.Rx_cnt = 0;	       //Buff Index Clear
 			RS485Rx.Rx_Data_flag = 0;
 			for (uint16_t i = 0; i < 25 ; i++){
@@ -1739,7 +1739,7 @@ void FUN_RS485_Rx_Timeout_Check(void)
 		}
 	}
 	else{
-		RS485Rx.Rx_Data_cnt = 0;
+		RS485Rx.Rx_Data_cnt = 0;      // 수신중이 아니면 cnt = 0
 	}
 }
 void RS485_Baudrate_Init(uint8_t baudrate)

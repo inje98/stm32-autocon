@@ -47,7 +47,7 @@ uint64_t CountCheck250ms  = 0;
 uint64_t CountCheck500ms  = 0;
 uint64_t CountCheck1000ms = 0;
 
-uint64_t TimeFreeRunTaskCnt = 0;
+uint64_t TimeFreeRunTaskCnt = 0; // main에 while안에 Task_Schedule_freerun() 이 함수 호출할때마다 ++되는데 어디다 쓰는지 모르겠음. 루프 돌때마다 1씩 증가
 
 uint8_t count_200ms = 0;
 
@@ -84,9 +84,9 @@ void FUN_Tim6_1ms_routine(void)
 void FUN_Tim6_5ms_routine(void)
 {
         CountCheck5ms++;
-        FUN_ADC_Routine();
+        FUN_ADC_Routine();              // CO Sensor
         //readData(hspi3, csPin);
-        Gas_Detecting(hspi3, csPin);
+        Gas_Detecting(hspi3, csPin);    // IR 투과율 측정?
 
 }
 
@@ -97,7 +97,7 @@ void FUN_Tim6_10ms_routine(void)
 {
         CountCheck10ms++;
         //RS485_Make_Send_Packet();
-        FUN_RS485_Rx_Timeout_Check();
+        FUN_RS485_Rx_Timeout_Check();  // 타임아웃 250ms
 }
 
 void FUN_Tim6_100ms_routine(void)
@@ -108,7 +108,7 @@ void FUN_Tim6_100ms_routine(void)
         //tx_test(huart5);
         if(count_200ms > 1){
         	count_200ms = 0;
-        	Gas_Sensor_Detect();
+        	Gas_Sensor_Detect();       // 가스 누적값 계산 이라고만 알고 Pass
         }
 
 }
@@ -173,7 +173,7 @@ void FUN_Tim6_1000ms_routine(void)
 /*	Overview	:															*/
 /*	Return value:	void													*/
 /****************************************************************************/
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)   // 1ms 마다 타이머(TIM6) 인터럽트 발생
 {
 
 	if(htim -> Instance == TIM6)
@@ -228,10 +228,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 void Task_Schedule_freerun(void)
 {
-	TimeFreeRunTaskCnt++;
+	TimeFreeRunTaskCnt++; // 이 변수 어디다 쓰는거지..?
 	if(TimeTask.bit.Task_1ms==1)                // 1ms  체크
 	{
-			FUN_Tim6_1ms_routine();
+			FUN_Tim6_1ms_routine(); // CountCheck1ms++ 만 해줌. 타이머인터럽트 발생만 되면 ++인거지. TimeTaskCnt.TimeScheduleCnt 얘랑 똑같이 올라갈듯
 
 			TimeTask.bit.Task_1ms = 0;
 	}

@@ -140,27 +140,27 @@ void FUN_I2C_SHT30_Init(void)
 	HAL_I2C_Master_Transmit(Int_SHT30.I2C_Handle, Int_SHT30.I2C_Addr, Int_SHT30.i2c_write_buff, 2, 100);
 	//HAL_I2C_Master_Transmit(&hi2c2, 0x45, i2c3_write, 2, 100);
 }
-void FUN_SHT30_Routine(_SHT30_Dev *sht30){
-	sht30->i2c_state = HAL_I2C_GetState(sht30->I2C_Handle);
-	sht30->i2c_error = HAL_I2C_GetError(sht30->I2C_Handle);
+void FUN_SHT30_Routine(_SHT30_Dev *sht30){  	// 250ms마다 호출
+	sht30->i2c_state = HAL_I2C_GetState(sht30->I2C_Handle); // sht30->I2C_Handle->State
+	sht30->i2c_error = HAL_I2C_GetError(sht30->I2C_Handle); // sht30->I2C_Handle->ErrorCode
 
-	if((sht30->i2c_state == HAL_I2C_STATE_READY) && (sht30->i2c_error == HAL_I2C_ERROR_NONE))
+	if((sht30->i2c_state == HAL_I2C_STATE_READY) && (sht30->i2c_error == HAL_I2C_ERROR_NONE))   //sht30->i2c_state가 준비상태이고, sht30->i2c_error 에러 없으면
 		{
 			// 주기 처리
-			if(sht30->i2c_period_cnt == 4) {
+			if(sht30->i2c_period_cnt == 4) { 			// 250ms * 4 =  // 1초마다 //
 				sht30->i2c_period_cnt = 0;
 
 				// 측정 결과 저장 : I2C 통신 진행
-				sfun_I2C_Measurement_results(sht30);
+				sfun_I2C_Measurement_results(sht30); 	// 이런거 호출 // 센서 데이터를 받고 다시 측정하라고 명령 보내고
 
 				// 결과 데이터 온습도로 변환
-				sfun_I2C_Measurement_conversion(sht30);
+				sfun_I2C_Measurement_conversion(sht30); // 받은 온습도 값 무결성 확인 후 값 정제후 sht30 구조체 변수에 저장
 
 				// 온습도 데이터 누적 저장
-				sfun_I2C_Acc_Data(sht30);
+				sfun_I2C_Acc_Data(sht30);				// sht30->temp_acc[], sht30->humi_acc[] 배열에 차곡차곡 저장
 
 				// 누적 데이터로 리셋 하는 함수 - 테스트상 현재 제외
-				sfun_I2C_Measurement_Error_Check(sht30);
+				sfun_I2C_Measurement_Error_Check(sht30);//
 			}
 
 			sht30->i2c_period_cnt++;
@@ -229,12 +229,12 @@ void FUN_I2C_SHT30_Routine(void)
 	FUN_SHT30_Routine(&Ext_SHT30);
 }
 
-void FUN_I2C_INT_SHT30_Routine(void){
+void FUN_I2C_INT_SHT30_Routine(void){  	// 250ms 마다 호출
 	FUN_SHT30_Routine(&Int_SHT30);
 	ui.i_temp_100times = (uint16_t)(Int_SHT30.temperature * 100);
 	ui.i_humi_100times = (uint16_t)(Int_SHT30.humidity * 100);
 }
-void FUN_I2C_EXT_SHT30_Routine(void){
+void FUN_I2C_EXT_SHT30_Routine(void){	// 250ms 마다 호출
 	FUN_SHT30_Routine(&Ext_SHT30);
 	ui.temp_100times = (uint16_t)(Ext_SHT30.temperature * 100);
 	ui.humi_100times = (uint16_t)(Ext_SHT30.humidity * 100);
@@ -292,13 +292,13 @@ void FUN_I2C_EXT_SHT30_Routine(void){
 /*	Overview	:															*/
 /*	Return value:	void													*/
 /****************************************************************************/
-void sfun_I2C_Measurement_results(_SHT30_Dev *sht30)
+void sfun_I2C_Measurement_results(_SHT30_Dev *sht30)												// 250ms * 4 = 1초마다
 {
-	HAL_I2C_Master_Receive(sht30->I2C_Handle, sht30->I2C_Addr, sht30->i2c_read_buff, 6, 100);
+	HAL_I2C_Master_Receive(sht30->I2C_Handle, sht30->I2C_Addr, sht30->i2c_read_buff, 6, 100);  		// 센서로부터 데이터 수신
 
 	sht30->i2c_write_buff[0] = (uint8_t)(CMD_SINGLE_EN_HIGH >> 8);
-	sht30->i2c_write_buff[1] = (uint8_t)(CMD_SINGLE_EN_HIGH & 0xFF);
-	HAL_I2C_Master_Transmit(sht30->I2C_Handle, sht30->I2C_Addr, sht30->i2c_write_buff, 2, 100);
+	sht30->i2c_write_buff[1] = (uint8_t)(CMD_SINGLE_EN_HIGH & 0xFF);   						   		// buf에 저장
+	HAL_I2C_Master_Transmit(sht30->I2C_Handle, sht30->I2C_Addr, sht30->i2c_write_buff, 2, 100);		// 센서로 다시 측정하라는 명령인듯. 100은 타임아웃
 }
 
 // 수신 데이터 온도 습도로 환산
@@ -306,21 +306,21 @@ void sfun_I2C_Measurement_results(_SHT30_Dev *sht30)
 /*	Overview	:															*/
 /*	Return value:	void													*/
 /****************************************************************************/
-void sfun_I2C_Measurement_conversion(_SHT30_Dev *sht30)
+void sfun_I2C_Measurement_conversion(_SHT30_Dev *sht30)  // 250ms * 4 = 1초마다
 {
 // 1. 온도값 CRC 계산이 맞으면
-	if(sht30->i2c_read_buff[2] == sfun_sht30_crc8(&sht30->i2c_read_buff[0],2))
+	if(sht30->i2c_read_buff[2] == sfun_sht30_crc8(&sht30->i2c_read_buff[0],2))   // sfun_sht30_crc8() : 센서에서 온도 데이터가 손상됐는지, 정확한지 확인 하는거인듯
 	{
 	// 1-1. 온도값 데이터 환산
 		int temp = (sht30->i2c_read_buff[0] * 256 + sht30->i2c_read_buff[1]);
-		sht30->temperature = -45 + (175 * temp / 65535.0) + temp_correction;
+		sht30->temperature = -45 + (175 * temp / 65535.0) + temp_correction;  // 온도값 정제하는거인듯
 		sht30->temp_hex = (uint16_t)(sht30->temperature * 10);
 		sht30->crc_error_flag = 0;
 		sht30->temp_crc_error_cnt = 0;
 	} else
 	{
 		// 온도값 CRC 에러 카운터 증가 : 센서 데이터 에러
-		sht30->temp_crc_error_cnt++;
+		sht30->temp_crc_error_cnt++;  											// sfun_sht30_crc8() 확인 해보니 무결하지 않다! -> 에러 카운트 증가
 
 	}
 
@@ -359,7 +359,7 @@ void sfun_I2C_Measurement_conversion(_SHT30_Dev *sht30)
 /*	Overview	:															*/
 /*	Return value:	void													*/
 /****************************************************************************/
-void sfun_I2C_Acc_Data(_SHT30_Dev *sht30)
+void sfun_I2C_Acc_Data(_SHT30_Dev *sht30)          // sht30 구조체 변수에 넣은 값 sht30->temp_acc,humi_acc 배열에 차곡차곡 저장 250ms * 4 = 1초마다 인덱스 바뀌면서 저장될듯
 {
 	sht30->temp_acc[sht30->temp_acc_cnt] = (sht30->temperature * 1000);
 	sht30->humi_acc[sht30->humi_acc_cnt] = (sht30->humidity * 1000);
@@ -443,7 +443,7 @@ void sfun_I2C_Status_Check(_SHT30_Dev *sht30)
 /*	Overview	:															*/
 /*	Return value:	void													*/
 /****************************************************************************/
-uint8_t sfun_sht30_crc8(const uint8_t *data, int len)
+uint8_t sfun_sht30_crc8(const uint8_t *data, int len)  // 받은 온도 데이터의 무결성 확인 이라고만 일단 알아둬보자
 {
     uint8_t crc = 0xff;
     for (uint8_t i = 0; i < len; i++) {

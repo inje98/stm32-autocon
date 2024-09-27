@@ -27,12 +27,12 @@ extern _Error Error;
 
 //Timer Task 설정
 
-typedef union {
+typedef union {  // 이 구조체 변수 값은 0 or 1 인거 같음 // : 1 이게 1비트 단위의 변수다. 이렇게 생각해도 될듯
 	struct {
 
 			uint16_t Task_1ms       : 1; // 0: 1ms Task
 
-			uint16_t Task_5ms       : 1; // 0: 5ms Task
+			uint16_t Task_5ms       : 1; // 0: 5ms Task -> 1: 5ms Task 오타인듯
 
 			uint16_t Task_10ms      : 1; // 2: 10ms Task
 
