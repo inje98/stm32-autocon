@@ -238,12 +238,12 @@ void FUN_I2C_EXT_SHT30_Routine(void){	// 250ms 마다 호출
 	FUN_SHT30_Routine(&Ext_SHT30);
 	ui.temp_100times = (uint16_t)(Ext_SHT30.temperature * 100);
 	ui.humi_100times = (uint16_t)(Ext_SHT30.humidity * 100);
-	if(ui.temp_alarm_enable){
-		if(ui.temp_warring_maintain_bit == 1 && ui.temp_warring_bit != 1){
-			if(Ext_SHT30.temperature > ui.temp_warring){
-				Ext_SHT30.warring_cnt ++;
-				if(Ext_SHT30.warring_cnt >= 5){
-					ui.temp_warring_bit = 1;
+	if(ui.temp_alarm_enable){		// ui.temp_alarm_enable이 활성화 되어 있으면
+		if(ui.temp_warring_maintain_bit == 1 && ui.temp_warring_bit != 1){  // ?
+			if(Ext_SHT30.temperature > ui.temp_warring){ // 설정된 온도 임계치보다 센서값이 높으면
+				Ext_SHT30.warring_cnt ++;				// warring_cnt 증가
+				if(Ext_SHT30.warring_cnt >= 5){			// warring_cnt 5 이상이 되면
+					ui.temp_warring_bit = 1;			// warring_bit 1로
 					Ext_SHT30.warring_cnt = 0;
 				}
 			}

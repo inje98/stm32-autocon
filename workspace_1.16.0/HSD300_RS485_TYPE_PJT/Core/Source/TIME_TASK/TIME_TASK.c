@@ -120,8 +120,8 @@ void FUN_Tim6_250ms_routine(void)
         CountCheck250ms++;
         //swtich_test();
 
-        FUN_I2C_INT_SHT30_Routine();
-    	FUN_I2C_EXT_SHT30_Routine();
+        FUN_I2C_INT_SHT30_Routine(); // 온습도값 sht30->temp_acc[]    sht30->humi_acc[]에 저장
+    	FUN_I2C_EXT_SHT30_Routine(); // 온습도값 sht30->temp_acc[]    sht30->humi_acc[]에 저장 // 경고랑 알람 처리까지 하는거같음
     	//FUN_I2C_VL53L3CX_Routine();
         /*if(!DS_ActiveFlag){
         	FUN_I2C_INT_SHT30_Routine();
@@ -139,7 +139,8 @@ void FUN_Tim6_250ms_routine(void)
 void FUN_Tim6_500ms_routine(void)
 {
         CountCheck500ms++;
-        FUN_GPIO_Routine();
+        FUN_GPIO_Routine();        // 로터리/딥 스위치
+        					       // if(ui.Status.Bit.SMOKE_DETECT == 1 || ui.temp_alarm_bit == 1 || Error.SHT30_Error == 1 || EEPROM.Error == 1)
         //readData(hspi3, csPin);
         //FUN_ADC_Routine();
 
@@ -228,10 +229,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)   // 1ms 마다 타�
 
 void Task_Schedule_freerun(void)
 {
-	TimeFreeRunTaskCnt++; // 이 변수 어디다 쓰는거지..?
+	TimeFreeRunTaskCnt++;
 	if(TimeTask.bit.Task_1ms==1)                // 1ms  체크
 	{
-			FUN_Tim6_1ms_routine(); // CountCheck1ms++ 만 해줌. 타이머인터럽트 발생만 되면 ++인거지. TimeTaskCnt.TimeScheduleCnt 얘랑 똑같이 올라갈듯
+			FUN_Tim6_1ms_routine();
 
 			TimeTask.bit.Task_1ms = 0;
 	}

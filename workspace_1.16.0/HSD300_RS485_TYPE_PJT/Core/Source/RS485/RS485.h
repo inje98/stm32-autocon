@@ -136,6 +136,21 @@ typedef union{
 	}Bit;
 }bit_field_Data;
 
+//typedef union{
+//	uint16_t u1t_bitfield[2];
+//	struct {
+//		uint16_t RUNNING				:	1;			// ON(1) : 동작 중 / OFF(0) 정지
+//		uint16_t SMOKE_DETECT			:	1;			// ON(1) : 연기 감지 발생
+//		uint16_t SHT30_SENSOR_ERROR		:	1;			// ON(1) : 온습도 센서 에러
+//		uint16_t ADC_ERROR				:	1;			// ON(1) : ADC 에러
+//		uint16_t OVER_TEMP_ERROR		:	1;			// ON(1) : 과온 에러  //20221130 추가
+//		uint16_t OBJ_DETECT				:   1;
+//		uint16_t DISTANCE_LEVEL			:	10;
+//
+//		uint16_t DISTANCE_LEVEL_1		:	16;
+//	}Bit;
+//}bit_field_Data;
+
 typedef struct{
 	uint8_t			 					ID;
 	bit_field_Data 						Status;

@@ -541,7 +541,7 @@ void RS485_CMD_Handler(uint8_t CMD)
 	Handler_Count++;
 	uint16_t TX_CheckSum;
 
-	switch(CMD)
+	switch(CMD) // CMD => RS485_RX_Get_Buf[2]
 	{
 
 		case 0xA1:
@@ -550,7 +550,7 @@ void RS485_CMD_Handler(uint8_t CMD)
 
 		 if(ui.Status.Bit.RUNNING == 1)
 		 {
-			 RS485_TX_Send_Buf[0]  = PACKET_STX; //STX
+			 RS485_TX_Send_Buf[0]  = PACKET_STX; //STX // 0x53
 			 RS485_TX_Send_Buf[1]  = 0x0D; //LENGTH
 			 RS485_TX_Send_Buf[2]  = 0xB1; //CMD_ID
 			 RS485_TX_Send_Buf[3]  = 0x01; //CMD_CODE

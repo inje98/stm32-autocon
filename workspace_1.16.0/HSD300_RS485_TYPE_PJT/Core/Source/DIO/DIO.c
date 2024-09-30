@@ -36,19 +36,22 @@ void FUN_GPIO_Init()
 /****************************************************************************/
 void FUN_GPIO_Routine(void)
 {
-	ID_Detecting();
-	DIP_Read();
-	if(ui.Status.Bit.SMOKE_DETECT == 1 || ui.temp_alarm_bit == 1 || Error.SHT30_Error == 1 || EEPROM.Error == 1){
-		ui.Status.Bit.RUNNING = 0;
-		ui.Detection_Error = 1;
+	ID_Detecting(); // 로터리 스위치 // 동그란 스위치 0~9
+	DIP_Read();		// 딥 스위치 // 뒷면 왼쪽 스위치 4개
+	if(ui.Status.Bit.SMOKE_DETECT == 1 || ui.temp_alarm_bit == 1 || Error.SHT30_Error == 1 || EEPROM.Error == 1)	// 넷 중 하나라도 문제 있으면
+	{
+		ui.Status.Bit.RUNNING = 0;																					// RUNNING 멈추고
+		ui.Detection_Error = 1; 																					// Detection_Error = 1
+
 	}
-	else{
+	else
+	{
 		ui.Status.Bit.RUNNING = 1;
 	}
-	if(ui.Status.Bit.RUNNING == 1){
+	if(ui.Status.Bit.RUNNING == 1){ // 아무 문제 없고 RUNNING == 1이면
 		HAL_GPIO_TogglePin(LED_STT_GPIO_Port, LED_STT_Pin);
 		//HAL_GPIO_WritePin(LED_STT_GPIO_Port, LED_STT_Pin, GPIO_PIN_RESET);
-		RUNNING_ON();
+		RUNNING_ON(); // HAL_GPIO_WritePin(	EXT_RUN_GPIO_Port, EXT_RUN_Pin, GPIO_PIN_RESET)
 	}
 	else{
 		HAL_GPIO_WritePin(LED_STT_GPIO_Port, LED_STT_Pin, GPIO_PIN_SET);
@@ -79,7 +82,7 @@ void FUN_GPIO_Routine(void)
 
 void ID_Detecting(void)
 {
-	if(ID_11_Input_Check() == InputPort_LOW)
+	if(ID_11_Input_Check() == InputPort_LOW)  // HAL_GPIO_ReadPin(ADDR_RTY11_GPIO_Port,ADDR_RTY11_Pin) == InputPort_LOW
 	{
 		ID.ID_Check_1 |= InputPort_HIGH;
 	}
@@ -162,7 +165,7 @@ void DIP_Read()
 	uint8_t Protocol_Type = ui.Protocol_Type;
 	uint8_t Baudrate = ui.Baudrate;
 	uint8_t Baud = 0x00;
-	if(DIP_1_Input_Check())
+	if(DIP_1_Input_Check())  // HAL_GPIO_ReadPin(SET_DIP4_GPIO_Port,SET_DIP4_Pin)
 	{
 		ui.SMK_Level = RANK_1;
 	}
@@ -171,10 +174,10 @@ void DIP_Read()
 	}
 	if(DIP_2_Input_Check()==0)
 	{
-		ui.Protocol_Type = ONOFF_PROTOCOL;
+		ui.Protocol_Type = ONOFF_PROTOCOL; // 0x01
 	}
 	else{
-		ui.Protocol_Type = MODBUS_PROTOCOL;
+		ui.Protocol_Type = MODBUS_PROTOCOL; // 0x00
 	}
 	Baud |= (!DIP_3_Input_Check() << 1) | (!DIP_4_Input_Check());
 	ui.Baudrate = Baud;

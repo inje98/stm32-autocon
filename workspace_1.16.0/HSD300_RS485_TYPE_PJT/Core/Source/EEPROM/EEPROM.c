@@ -167,7 +167,7 @@ void EEPROM_routine(void)
 	if(EEPROM.SaveData_Flag == 1)
 	{
 		EEPROM.TxBuff[0] = EEPROM_WREN;
-		EEPROM_Comm(EEPROM.TxBuff, EEPROM.RxBuff, 1);
+		EEPROM_Comm(EEPROM.TxBuff, EEPROM.RxBuff, 1);        // HAL_SPI_TransmitReceive()
 		//HAL_Delay(10);
 		EEPROM.TxBuff[0] = EEPROM_RDSR;
 		EEPROM_Comm(EEPROM.TxBuff, EEPROM.RxBuff, 2);
