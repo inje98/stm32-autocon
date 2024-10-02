@@ -38,15 +38,16 @@ void FUN_GPIO_Routine(void)
 {
 	ID_Detecting(); // 로터리 스위치 // 동그란 스위치 0~9
 	DIP_Read();		// 딥 스위치 // 뒷면 왼쪽 스위치 4개
+
+	// 밑엔 다 LED 부분인듯. RUNNING, RUNNING_OFF, 연기감지LED, 경고/알람LED
 	if(ui.Status.Bit.SMOKE_DETECT == 1 || ui.temp_alarm_bit == 1 || Error.SHT30_Error == 1 || EEPROM.Error == 1)	// 넷 중 하나라도 문제 있으면
 	{
 		ui.Status.Bit.RUNNING = 0;																					// RUNNING 멈추고
 		ui.Detection_Error = 1; 																					// Detection_Error = 1
-
 	}
 	else
 	{
-		ui.Status.Bit.RUNNING = 1;
+		ui.Status.Bit.RUNNING = 1;  // 저 4개 조건이 다 0이야 일로 오니까 --> 아무런 문제가 없다면 RUNNING = 1
 	}
 	if(ui.Status.Bit.RUNNING == 1){ // 아무 문제 없고 RUNNING == 1이면
 		HAL_GPIO_TogglePin(LED_STT_GPIO_Port, LED_STT_Pin);
@@ -118,8 +119,9 @@ void ID_Detecting(void)
 	{
 		ID.ID_Check_1 = ID.ID_Check_1 & 0xF7;
 	}
+	// 왼쪽
 
-
+	// 오른쪽이지 않을까
 	if(ID_21_Input_Check() == InputPort_LOW)
 	{
 		ID.ID_Check_2 |= InputPort_HIGH;

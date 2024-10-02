@@ -94,7 +94,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 
  	if(huart->Instance==UART5)
  	{
- 	    RS485_RE();
+ 	    RS485_RE();  // 송신하면 HAL_GPIO_WritePin(RS485_DE_GPIO_Port, RS485_DE_Pin, GPIO_PIN_RESET) --> 바로 받을 준비
  	}
 }
 
@@ -885,7 +885,7 @@ void FUN_RS485_routine(void)
 /*	Return value:	void													*/
 /****************************************************************************/
 /* Example: Sensor --> PC : AddF_ReqDataToPC(0,18,0x05A1,0x01); */
-void AddF_ReqDataToPC(uint16_t size, uint16_t cmd, uint8_t code )
+void AddF_ReqDataToPC(uint16_t size, uint16_t cmd, uint8_t code )  // 데이터 송신을 위한 프레임 구성 / 전송 준비 인듯
 {
 	uint8_t RS48501_TxBuf[26];
 	uint16_t checksum, ii;
@@ -1063,7 +1063,7 @@ void AddF_ReqDataToPC(uint16_t size, uint16_t cmd, uint8_t code )
 }
 
 /* Example: Sensor --> PC : AddF_CmdReqToPC(0,18,0x05A1,0x01~); */
-void AddF_CmdReqToPC(uint16_t size, uint16_t cmd, uint8_t code, uint8_t error, uint8_t cmdAck)
+void AddF_CmdReqToPC(uint16_t size, uint16_t cmd, uint8_t code, uint8_t error, uint8_t cmdAck)  // 일단 명령 요청을 위한 패킷 만드는거라고 생각해보자
 {
 	uint8_t RS48502_TxBuf[20];
 	uint16_t checksum;
@@ -1206,7 +1206,7 @@ void RS48501_TxData(void)
 	if(RS48501_TxPos != RS48501_TxEnd)
 	{
 
-		RS485_DE();
+		RS485_DE(); // HAL_GPIO_WritePin(RS485_DE_GPIO_Port, RS485_DE_Pin, GPIO_PIN_SET)  // RS485핀을 데이터를 송신할 수 있게 활성화
 
 		 if(ui.Protocol_Type == 0)
 		 {
@@ -1224,7 +1224,7 @@ void RS48501_TxData(void)
 				 HAL_UART_Transmit_IT(&huart5, &Read_Data_Tx[0], 5);
 			 }
 		 }
-		 else
+		 else   // ui.Protocol_Type == 0 이 아닌 경우
 		 {
 			dataSize = ((uint16_t)RS48501_TxSendFrame[1] << 8);
 			dataSize |= ((uint16_t)RS48501_TxSendFrame[2] & 0xFF);
@@ -1256,7 +1256,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	 if(huart->Instance==UART5)
 	 {
-		RS485_RE();
+		RS485_RE(); // 송신이 완료되면 자동으로 GPIO 핀 활성화해서 수신모드로..
 		if(RS485Rx.boot_send == 1){
 			reboot_flag = 1;
 		}
@@ -1267,8 +1267,8 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 /*	Overview	:	RX 데이터 처리 통신 프레임										*/
 /*	Return value:	void													*/
 /****************************************************************************/
-uint8_t FUN_Rx_data_check(void)
-{
+uint8_t FUN_Rx_data_check(void)  // 실패한 수신 0 리턴 / 성공 RS485Rx.result 리턴
+{								 // 프레임 각 부분이 올바른지 확인 하는거 같음 --> RS485 통신의 안정성 확보 역할인듯
 	//STX 체크
 	if(RS485Rx0Data[0] != PACKET_STX)//'S')
 	{
@@ -1375,7 +1375,7 @@ uint8_t FUN_Rx_data_check(void)
 	// 데이터가 더 남아있다
 	return 0;
 }
-uint8_t FUN_Rx_data_Modbus_check(void)
+uint8_t FUN_Rx_data_Modbus_check(void)  // 얘도 패킷 검사하고 실패 0 리턴 같음. 근데 얘는 성공 리턴 1임
 {
 	static uint8_t writeLen = 0;
 

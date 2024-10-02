@@ -26,7 +26,7 @@ float  IR_MovBuff[Moving_Average_Buff_Size] ={0,};
 float  Blue_IR_MovBuff[Moving_Average_Buff_Size] ={0,};
 
 
-float SMK_MovingAverageFilter(float f_data, float *f_buf)
+float SMK_MovingAverageFilter(float f_data, float *f_buf) // 버퍼 값 평균 // 버퍼 안에 값이 언제 들어가는지 모르겠음
 {
     //버퍼가   5이라고 하면
    //카운트는 1부터 4까지 증가
@@ -83,7 +83,7 @@ void Gas_Detecting(SPI_HandleTypeDef hspi, struct CsPin csPin) // 5ms마다 호�
 //	Gas_Sensor.IR_Data = SMK_MovingAverageFilter((float)IR_Data.result_IR_val * 0.1);
 //	Gas_Sensor.Blue_IR_Data = SMK_MovingAverageFilter((float)IR_Data.result_Blue_val * 0.1);
 	Gas_Sensor.IR_Data = SMK_MovingAverageFilter(IR_Data.result_IR_val, &IR_MovBuff[0]);                // 받아온 ADP_RESULT 구조체의 각각 멤버변수를 Gas_Sensor에 넣어준다. 5ms마다
-	Gas_Sensor.Blue_IR_Data = SMK_MovingAverageFilter(IR_Data.result_Blue_val, &Blue_IR_MovBuff[0]);
+	Gas_Sensor.Blue_IR_Data = SMK_MovingAverageFilter(IR_Data.result_Blue_val, &Blue_IR_MovBuff[0]);    // 근데 버퍼에 값이 언제 들어가는지.
 	//Gas_Sensor_Detect();
 }
 
@@ -91,8 +91,8 @@ void Gas_Detecting(SPI_HandleTypeDef hspi, struct CsPin csPin) // 5ms마다 호�
 void Gas_Sensor_Detect()    //  100ms마다 호출
 {
 	// 오차 누적값 계산
-	Gas_Sensor.IR_Cumulative_Error = (Gas_Sensor.IR_Data * 0.1) - Gas_Sensor.IR_Cumulative;
-	Gas_Sensor.Blue_IR_Cumulative_Error = Gas_Sensor.Blue_IR_Data * 0.1 - Gas_Sensor.Blue_IR_Cumulative;
+	Gas_Sensor.IR_Cumulative_Error = (Gas_Sensor.IR_Data * 0.1) - Gas_Sensor.IR_Cumulative;  			 // SMK_MovingAverageFilter() 리턴값 - 4.25(인듯? 다른데서 받는부분이 없음)
+	Gas_Sensor.Blue_IR_Cumulative_Error = Gas_Sensor.Blue_IR_Data * 0.1 - Gas_Sensor.Blue_IR_Cumulative; // 이것도 똑같
 
 	if(Gas_Sensor.IR_Cumulative_Error > Gas_Sensor.IR_Cumulative_Error_Int_Limit)
 	{

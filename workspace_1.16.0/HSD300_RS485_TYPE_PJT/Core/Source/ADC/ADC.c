@@ -78,7 +78,7 @@ void FUN_ADC_Routine(void)  // 5ms 마다 이리로 온다.
 	Co_Sensor = movingAverageFilter(&adc_value[0]);    // 그 평균을 CO_Sensor에 넣어주고
 	vout = (float)(Co_Sensor/4096.0)*3.3 ;             // 아날로그 센서 값을 전압으로 치환하는거 아닐까싶음
 	//ppm = Co_Sensor / 100;
-	ui.co_100times = Co_Sensor;                        // RS485에 있는 [2] ~ [3] NTC 온도 라는데 일단 몰라 일단 Pass
+	ui.co_100times = Co_Sensor;                        // RS485에 있는 [2] ~ [3] NTC 온도 라는데 일단 몰라 Pass
 	if(++a_index >= ADC_BUFF_MAX)                      // ADC_BUFF_MAX가 30이니까 5ms * 30 = 0.15초 마다 인덱스 초기화
 	{
 		a_index = 0;

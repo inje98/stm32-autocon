@@ -34,7 +34,7 @@ uint32_t* TESTS[6];
 /* Private function prototypes -----------------------------------------------*/
 
 
-uint16_t CRC16(uint8_t* buf, size_t len)
+uint16_t CRC16(uint8_t* buf, size_t len) // 같은 데이터가 보내졌는지 확인하는 방법이라고 gpt가 그랬음 / 데이터 무결성 검증
 {
   uint16_t crc = 0xFFFF;
 
@@ -118,7 +118,7 @@ void FUN_Modbus_Write_save(void)
 	ui.temp_alarm_maintain_bit 	 = Data_Register[11];
 
 	// �µ��� ��� ���� Update
-	ui.temp_warring    = (float)(ui.temp_warring_hex) / 100;
+	ui.temp_warring    = (float)(ui.temp_warring_hex) / 100;  // 만약 Modbus로부터 받은 값이 2500이라면, 실제 값 = 25.00
 	// �µ��� �˶� ���� Update
 	ui.temp_alarm      = (float)(ui.temp_alarm_hex) / 100;
 	// �µ� ��� ���� �� Update
@@ -127,7 +127,7 @@ void FUN_Modbus_Write_save(void)
 	if((RS485Rx.ff_cTemp_warring_R != ui.temp_warring_hex) || (RS485Rx.ff_cTemp_alarm_R != ui.temp_alarm_hex) || (RS485Rx.Warring_Deviation_R != RS485Rx.Warring_Deviation)
 			|| (RS485Rx.TEnable_bit_R != RS485Rx.TEnable_bit) || (RS485Rx.Temp_Warring_Keep_R != RS485Rx.Temp_Warring_Keep) || (RS485Rx.Temp_Alram_keep_R != RS485Rx.Temp_Alram_keep))
 	{
-		// EEPROM ����
+		// RS485Rx에 저장된 이전 Modbus 데이터 값과 현재 값이 다를 경우 데이터를 EEPROM에 저장하겠다는 의미. 즉, 값이 변경되었을 때만 Flag =1로
 		EEPROM.SaveData_Flag = 1;
 	}
 

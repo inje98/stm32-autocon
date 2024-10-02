@@ -40,7 +40,7 @@ void EEPROM_Factory_Reset();
 
 void EEPROM_Comm(uint8_t* T_buffer, uint8_t* R_buffer, unsigned int num)
 {
-	EEPROM_CS_OFF();
+	EEPROM_CS_OFF(); // Hal_writePin(reset)
 	//WP_EEPROM_OFF();
 	//HOLD_EEPROM_ON();    // CS low
 
@@ -160,7 +160,7 @@ void EEPROM_init(void)
 /*	Overview	:															*/
 /*	Return value:	void													*/
 /****************************************************************************/
-void EEPROM_routine(void)
+void EEPROM_routine(void)  // 1000ms
 {
 	//EEPROM TEST
 	//EEPROM_SPI_WriteBuffer(EEPROM.Buff, (uint16_t)0x01, EEPROM_BUFFER_SIZE);
