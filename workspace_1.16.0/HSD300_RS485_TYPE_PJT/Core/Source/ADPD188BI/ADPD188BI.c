@@ -56,9 +56,16 @@ HAL_StatusTypeDef writeToRegister(const uint8_t registerAddress, const uint16_t 
     // address 7bits ,1bit W/R =1
     union SpiRegisterData spiRegisterData = {.dataFormat = {0, 0, 0, 0}};
     spiRegisterData.dataFormat.registerAddress = registerAddress;
-    spiRegisterData.dataFormat.writeReadBit = 0x01;
-    spiRegisterData.dataFormat.msb = (data >> 8) & 0xFF; // MSB
-    spiRegisterData.dataFormat.lsb = data & 0xFF;    // LSB
+    spiRegisterData.dataFormat.writeReadBit = 0x01;  // :1 이니까 16비트 중 하위 1비트만 들어가. 그니까 0x02를 넣어도 하위비트 1이 들어가는거지
+    spiRegisterData.dataFormat.msb = (data >> 8) & 0xFF; // MSB // & 0xFF는 하위 두비트만 추출하는거지
+    spiRegisterData.dataFormat.lsb = data & 0xFF;    // LSB // 만약 데이터가 0001 0010 0011 0100 이라면 상위 두 비트 자르고 0011 0100만 추출
+    /*
+     0001 0010 0011 0100  (0x1234)
+	 &
+	 0000 0000 1111 1111  (0x00FF)
+	 -------------------
+	 0000 0000 0011 0100  (0x34)
+     */
 
     HAL_GPIO_WritePin(csPin.gpio, csPin.gpioPinMask, GPIO_PIN_RESET);
     HAL_SPI_Transmit(&hspi, (uint8_t *) &spiRegisterData, 3, 100);
@@ -268,7 +275,7 @@ _result_adp_data readData(SPI_HandleTypeDef hspi, struct CsPin csPin)    // 구�
   _ADP_rawData raw_adp_data = {0,0};
   _ADP_rawData dummy_data = {0,0};
   //update Fifo with new readings
-  union DataAccessCtrl dataAccessCtrl = {.bits={0, 0, 0, 0}, .raw = 0};
+  union DataAccessCtrl dataAccessCtrl = {.bits={0, 0, 0, 0}, .raw = 0};  // {.raw = 0}; 그냥 이렇게만 써도 된다는거 같음
   writeToRegister(DATA_ACCESS_CONTROL_REGISTER, dataAccessCtrl.raw, hspi, csPin, true);
 
   // if sampling  time is elapsed Hold Samples in the Fifo

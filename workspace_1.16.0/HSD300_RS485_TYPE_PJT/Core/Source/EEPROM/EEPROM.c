@@ -164,7 +164,7 @@ void EEPROM_routine(void)  // 1000ms
 {
 	//EEPROM TEST
 	//EEPROM_SPI_WriteBuffer(EEPROM.Buff, (uint16_t)0x01, EEPROM_BUFFER_SIZE);
-	if(EEPROM.SaveData_Flag == 1)
+	if(EEPROM.SaveData_Flag == 1)  // EEPROM.SaveData_Flag == 1 --> 저장할 데이터가 있음을 의미하는것이 아닌가
 	{
 		EEPROM.TxBuff[0] = EEPROM_WREN;
 		EEPROM_Comm(EEPROM.TxBuff, EEPROM.RxBuff, 1);        // HAL_SPI_TransmitReceive()
@@ -172,10 +172,10 @@ void EEPROM_routine(void)  // 1000ms
 		EEPROM.TxBuff[0] = EEPROM_RDSR;
 		EEPROM_Comm(EEPROM.TxBuff, EEPROM.RxBuff, 2);
 
-		EEPROM.TxBuff[0] = EEPROM_WRITE;
-		EEPROM.TxBuff[1] = EEPROM_addr >> 8;      // high byte
-		EEPROM.TxBuff[2] = EEPROM_addr & 0x00FF;  // low byte
-		EEPROM.TxBuff[3] = (uint16_t)(ui.temp_warring_hex & 0xFF);
+		EEPROM.TxBuff[0] = EEPROM_WRITE;          // 쓰기 명령 전송
+		EEPROM.TxBuff[1] = EEPROM_addr >> 8;      // high byte // 데이터를 쓸 상위 주소
+		EEPROM.TxBuff[2] = EEPROM_addr & 0x00FF;  // low byte  // 데이터를 쓸 하위 주소
+		EEPROM.TxBuff[3] = (uint16_t)(ui.temp_warring_hex & 0xFF);  // ui 구조체에 있는 변수를 버퍼에 저장
 		EEPROM.TxBuff[4] = (uint16_t)(ui.temp_warring_hex >>8);
 		EEPROM.TxBuff[5] = (uint16_t)(ui.temp_alarm_hex & 0xFF);
 		EEPROM.TxBuff[6] = (uint16_t)(ui.temp_alarm_hex >>8);
@@ -207,8 +207,8 @@ void EEPROM_routine(void)  // 1000ms
 		EEPROM.Checksum = 0;
 		for(int i = 3; i < 28; i++)
 		{
-			EEPROM.Checksum += EEPROM.TxBuff[i];
-		}
+			EEPROM.Checksum += EEPROM.TxBuff[i];     // 3번부터 27번까지 데이터 다 더해서 30~31에 8바이트씩 나눠서 넣는데
+		}											 // 나중에 데이터가 올바르게 기록되었는지 확인 용도인거 같음
 
 		EEPROM.TxBuff[30] = (uint16_t)(EEPROM.Checksum & 0xFF);
 		EEPROM.TxBuff[31] = (uint16_t)(EEPROM.Checksum >>8);

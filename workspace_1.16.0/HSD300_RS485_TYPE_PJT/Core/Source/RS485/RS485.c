@@ -885,7 +885,7 @@ void FUN_RS485_routine(void)
 /*	Return value:	void													*/
 /****************************************************************************/
 /* Example: Sensor --> PC : AddF_ReqDataToPC(0,18,0x05A1,0x01); */
-void AddF_ReqDataToPC(uint16_t size, uint16_t cmd, uint8_t code )  // 데이터 송신을 위한 프레임 구성 / 전송 준비 인듯
+void AddF_ReqDataToPC(uint16_t size, uint16_t cmd, uint8_t code )  // 데이터 송신을 위한 프레임 구성 / 전송 준비 인듯 // RxCallback
 {
 	uint8_t RS48501_TxBuf[26];
 	uint16_t checksum, ii;
@@ -899,7 +899,7 @@ void AddF_ReqDataToPC(uint16_t size, uint16_t cmd, uint8_t code )  // 데이터 
 	//CMD
 	RS48501_TxBuf[3] = (uint8_t)(cmd>> 8);
 	RS48501_TxBuf[4] = (uint8_t)(cmd & 0xFF);
-	//code
+	//Code
 	RS48501_TxBuf[5] = code;
 
 	// Tx Count
@@ -1063,7 +1063,7 @@ void AddF_ReqDataToPC(uint16_t size, uint16_t cmd, uint8_t code )  // 데이터 
 }
 
 /* Example: Sensor --> PC : AddF_CmdReqToPC(0,18,0x05A1,0x01~); */
-void AddF_CmdReqToPC(uint16_t size, uint16_t cmd, uint8_t code, uint8_t error, uint8_t cmdAck)  // 일단 명령 요청을 위한 패킷 만드는거라고 생각해보자
+void AddF_CmdReqToPC(uint16_t size, uint16_t cmd, uint8_t code, uint8_t error, uint8_t cmdAck)  // 일단 명령 요청을 위한 패킷 만드는거라고 생각해보자 //RxCallback
 {
 	uint8_t RS48502_TxBuf[20];
 	uint16_t checksum;
@@ -1071,21 +1071,22 @@ void AddF_CmdReqToPC(uint16_t size, uint16_t cmd, uint8_t code, uint8_t error, u
 
 	//프레임
 	RS48502_TxBuf[0] = PACKET_STX;
-	//Length 길이
+	//Length 길이 // CMD ~ DATA 까지의 바이트 수
 	RS48502_TxBuf[1] = (uint8_t)(size>> 8);
 	RS48502_TxBuf[2] = (uint8_t)(size & 0xFF);
-	//CMD
+	//CMD		// 통신 명령
 	RS48502_TxBuf[3] = (uint8_t)(cmd>> 8);
 	RS48502_TxBuf[4] = (uint8_t)(cmd & 0xFF);
-	//code
+	//code		// 명령 구분
 	RS48502_TxBuf[5] = code;
 
-	// Count
+	// Count	// 송신 Count(0~255 반복)
 	 ui.TxCount ++;
 	RS48502_TxBuf[6] = ui.TxCount;
 	// ID
 	RS48502_TxBuf[7] = HsdID;
 
+	// 온도 습도 등 데이터
 	/* Data Range */
 	RS48502_TxBuf[8] = error;	 // 에러 상태
 	RS48502_TxBuf[9] = cmdAck;   // 수신 명령 확인 회신
@@ -1096,7 +1097,7 @@ void AddF_CmdReqToPC(uint16_t size, uint16_t cmd, uint8_t code, uint8_t error, u
 	RS48502_TxBuf[13] = 0;
 	RS48502_TxBuf[14] = 0;
 
-	// 체크섬 계산
+	// 체크섬 계산 // length ~ Data 까지의 1Byte 씩 합한 값
 	checksum = 0;
 	for (ii = 1; ii < 15 ; ii++)
 	{
@@ -1129,7 +1130,7 @@ void AddF_CmdReqToPC(uint16_t size, uint16_t cmd, uint8_t code, uint8_t error, u
 	RS48501_TxPos++;
 	if(RS48501_TxPos >= 20)	RS48501_TxPos = 0;
 }
-void AddF_CmdReqToPC_Val(uint16_t size, uint16_t cmd, uint8_t code, uint8_t error, int16_t data1, int16_t data2)
+void AddF_CmdReqToPC_Val(uint16_t size, uint16_t cmd, uint8_t code, uint8_t error, int16_t data1, int16_t data2) // RxCallback
 {
 	uint8_t RS48502_TxBuf[20];
 	uint16_t checksum, ii;
@@ -1150,7 +1151,7 @@ void AddF_CmdReqToPC_Val(uint16_t size, uint16_t cmd, uint8_t code, uint8_t erro
 	RS48502_TxBuf[6] = ui.TxCount;
 
 	// ID
-	RS48502_TxBuf[7] = HsdID;
+	RS48502_TxBuf[7] = HsdID; // ui.ID
 
 	/* Data Range */
 	RS48502_TxBuf[8] = error;	 // 에러 상태
@@ -1255,7 +1256,7 @@ void RS48501_TxData(void)
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	 if(huart->Instance==UART5)
-	 {
+	 {	// RS485_DE : 송신
 		RS485_RE(); // 송신이 완료되면 자동으로 GPIO 핀 활성화해서 수신모드로..
 		if(RS485Rx.boot_send == 1){
 			reboot_flag = 1;
@@ -1270,7 +1271,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 uint8_t FUN_Rx_data_check(void)  // 실패한 수신 0 리턴 / 성공 RS485Rx.result 리턴
 {								 // 프레임 각 부분이 올바른지 확인 하는거 같음 --> RS485 통신의 안정성 확보 역할인듯
 	//STX 체크
-	if(RS485Rx0Data[0] != PACKET_STX)//'S')
+	if(RS485Rx0Data[0] != PACKET_STX) //'S')
 	{
 		RS485Rx.Rx_cnt = 0;
 		// 실패한 수신

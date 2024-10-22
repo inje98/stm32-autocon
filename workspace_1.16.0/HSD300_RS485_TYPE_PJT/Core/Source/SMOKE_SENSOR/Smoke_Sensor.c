@@ -155,5 +155,4 @@ void Gas_Detect_Bit_Reset()
 	Gas_Sensor.Blue_IR_Cumulative_Error = 0;
 	Gas_Sensor.Blue_IR_Cumulative_Error_Int = 0;
 	Gas_Sensor.Blue_IR_Cumulative_Error_Int_K = 0;
-
 }

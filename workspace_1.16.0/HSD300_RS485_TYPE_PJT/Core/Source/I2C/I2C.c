@@ -158,7 +158,7 @@ void FUN_SHT30_Routine(_SHT30_Dev *sht30){  	// 250ms마다 호출
 
 				// 온습도 데이터 누적 저장
 				sfun_I2C_Acc_Data(sht30);				// sht30->temp_acc[], sht30->humi_acc[] 배열에 차곡차곡 저장
-
+														// 이 배열은 error check에만 쓰이고 센서값 자체는 sht
 				// 누적 데이터로 리셋 하는 함수 - 테스트상 현재 제외
 				sfun_I2C_Measurement_Error_Check(sht30);//
 			}
@@ -362,13 +362,19 @@ void sfun_I2C_Measurement_conversion(_SHT30_Dev *sht30)  // 250ms * 4 = 1초마�
 /****************************************************************************/
 void sfun_I2C_Acc_Data(_SHT30_Dev *sht30)          // sht30 구조체 변수에 넣은 값 sht30->temp_acc,humi_acc 배열에 차곡차곡 저장 250ms * 4 = 1초마다 인덱스 바뀌면서 저장될듯
 {
-	sht30->temp_acc[sht30->temp_acc_cnt] = (sht30->temperature * 1000);
+	sht30->temp_acc[sht30->temp_acc_cnt] = (sht30->temperature * 1000); // error check에 쓰이는 배열
 	sht30->humi_acc[sht30->humi_acc_cnt] = (sht30->humidity * 1000);
 
 	if(sht30->temp_acc_cnt == 19) {
 		sht30->temp_acc_cnt = 0;
 	} else {
 		++sht30->temp_acc_cnt;
+	}
+
+	if(sht30->humi_acc_cnt == 19) {
+			sht30->humi_acc_cnt = 0;
+	} else {
+			++sht30->humi_acc_cnt;
 	}
 }
 

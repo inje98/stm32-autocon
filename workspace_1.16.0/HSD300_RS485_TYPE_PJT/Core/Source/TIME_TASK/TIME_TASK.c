@@ -69,7 +69,7 @@ void FUN_TIM_init(void)
 /****************************************************************************/
 void FUN_Tim6_1ms_routine(void)
 {
-        CountCheck1ms++;
+        CountCheck1ms++; // 어디다 쓰이진 않는듯
 #ifdef HSS300
         RS485_AnalyzePacket();
 #endif
@@ -87,7 +87,6 @@ void FUN_Tim6_5ms_routine(void)
         FUN_ADC_Routine();              // CO Sensor
         //readData(hspi3, csPin);
         Gas_Detecting(hspi3, csPin);    // IR 투과율 측정?
-
 }
 
 
@@ -110,7 +109,6 @@ void FUN_Tim6_100ms_routine(void)
         	count_200ms = 0;
         	Gas_Sensor_Detect();       // 가스 누적값 계산 이라고만 알고 Pass
         }
-
 }
 
 
@@ -152,7 +150,7 @@ void FUN_Tim6_1000ms_routine(void)
 {
         CountCheck1000ms++;
         EEPROM_routine();
-    	FUN_RS485_routine();
+    	FUN_RS485_routine();   // HsdID = ui.ID --> 변경 ID 값 Update  //  FUN_RS485_Error_routine() -->  RS485 통신 에러 점검
         //readData(hspi3, csPin);
 
 
