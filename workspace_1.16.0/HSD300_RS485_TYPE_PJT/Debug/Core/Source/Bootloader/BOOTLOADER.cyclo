@@ -1,4 +1,0 @@
-../Drivers/CMSIS/Include/core_cm4.h:1933:34:__NVIC_SystemReset	1
-../Core/Source/Bootloader/BOOTLOADER.c:44:13:FUN_Flash_event	1
-../Core/Source/Bootloader/BOOTLOADER.c:71:6:FUN_bootloader_init	1
-../Core/Source/Bootloader/BOOTLOADER.c:80:6:FUN_bootloader_freerun	4

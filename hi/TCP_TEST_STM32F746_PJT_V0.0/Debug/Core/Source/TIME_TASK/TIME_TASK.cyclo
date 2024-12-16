@@ -1,3 +1,0 @@
-../Core/Source/TIME_TASK/TIME_TASK.c:28:6:FUN_TIM_Init	1
-../Core/Source/TIME_TASK/TIME_TASK.c:115:6:Task_Schedule	6
-../Core/Source/TIME_TASK/TIME_TASK.c:165:6:Task_Schedule_FreeRun	15

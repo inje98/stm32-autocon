@@ -1,7 +1,0 @@
-../Core/Src/main.c:43:6:des_encrypt	1
-../Core/Src/main.c:57:6:des_decrypt	1
-../Core/Src/main.c:327:6:StartDefaultTask	1
-../Core/Src/main.c:198:6:SystemClock_Config	4
-../Core/Src/main.c:111:5:main	1
-../Core/Src/main.c:396:6:HAL_TIM_PeriodElapsedCallback	2
-../Core/Src/main.c:413:6:Error_Handler	1

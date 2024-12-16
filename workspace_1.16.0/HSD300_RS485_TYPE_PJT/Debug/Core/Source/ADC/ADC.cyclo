@@ -1,6 +1,0 @@
-../Core/Source/ADC/ADC.c:30:6:HAL_ADC_ConvCpltCallback	2
-../Core/Source/ADC/ADC.c:43:6:FUN_ADC_Init	2
-../Core/Source/ADC/ADC.c:52:6:SENSOR_ADC_init	1
-../Core/Source/ADC/ADC.c:58:10:FUN_ADC_GetValue	1
-../Core/Source/ADC/ADC.c:74:6:FUN_ADC_Routine	2
-../Core/Source/ADC/ADC.c:91:10:movingAverageFilter	4

@@ -1,5 +1,0 @@
-../Core/Source/SMOKE_SENSOR/Smoke_Sensor.c:29:7:SMK_MovingAverageFilter	2
-../Core/Source/SMOKE_SENSOR/Smoke_Sensor.c:58:6:Gas_Sensor_Init	1
-../Core/Source/SMOKE_SENSOR/Smoke_Sensor.c:80:6:Gas_Detecting	1
-../Core/Source/SMOKE_SENSOR/Smoke_Sensor.c:91:6:Gas_Sensor_Detect	7
-../Core/Source/SMOKE_SENSOR/Smoke_Sensor.c:149:6:Gas_Detect_Bit_Reset	1

@@ -1,5 +1,0 @@
-../Core/Source/FLASH/FLASH.c:16:6:FLASH_Init	2
-../Core/Source/FLASH/FLASH.c:30:6:flashInSector	9
-../Core/Source/FLASH/FLASH.c:75:10:FLASH_Erase	5
-../Core/Source/FLASH/FLASH.c:128:10:FLASH_Erase_FLA	2
-../Core/Source/FLASH/FLASH.c:171:10:FLASH_Write	3

@@ -1,4 +1,0 @@
-../Core/Source/DIO/DIO.c:24:6:FUN_GPIO_Init	1
-../Core/Source/DIO/DIO.c:37:6:FUN_GPIO_Routine	9
-../Core/Source/DIO/DIO.c:84:6:ID_Detecting	9
-../Core/Source/DIO/DIO.c:164:6:DIP_Read	8
